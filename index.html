@@ -28,7 +28,6 @@
     overflow-x: hidden;
   }
 
-  /* Animated background */
   body::before {
     content: '';
     position: fixed;
@@ -49,7 +48,6 @@
     padding: 0 24px;
   }
 
-  /* HEADER */
   header {
     padding: 48px 0 0;
     text-align: center;
@@ -94,7 +92,6 @@
     font-weight: 600;
   }
 
-  /* DIVIDER */
   .divider {
     display: flex;
     align-items: center;
@@ -110,7 +107,6 @@
   }
   .divider-icon { font-size: 18px; }
 
-  /* HOW IT WORKS */
   .steps {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -146,7 +142,6 @@
     line-height: 1.5;
   }
 
-  /* MAIN FORM CARD */
   .card {
     background: var(--ash);
     border: 1px solid rgba(255,69,0,0.2);
@@ -177,7 +172,6 @@
     margin-bottom: 28px;
   }
 
-  /* EXPENSE GRID */
   .expense-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -225,9 +219,7 @@
     border-radius: 8px;
     padding: 16px;
   }
-  .income-field label {
-    color: var(--gold) !important;
-  }
+  .income-field label { color: var(--gold) !important; }
   .income-field input {
     background: transparent;
     border-color: rgba(255,215,0,0.2);
@@ -259,7 +251,6 @@
     border-color: var(--fire);
   }
 
-  /* ROAST BUTTON */
   .roast-btn {
     width: 100%;
     padding: 18px;
@@ -273,8 +264,6 @@
     cursor: pointer;
     transition: transform 0.15s, box-shadow 0.15s;
     box-shadow: 0 4px 30px rgba(255,69,0,0.4);
-    position: relative;
-    overflow: hidden;
     margin-top: 8px;
   }
   .roast-btn:hover {
@@ -288,7 +277,6 @@
     transform: none;
   }
 
-  /* LOADING STATE */
   .loading-state {
     display: none;
     text-align: center;
@@ -320,7 +308,6 @@
     font-style: italic;
   }
 
-  /* ROAST RESULT */
   .result-card {
     display: none;
     background: var(--ash);
@@ -375,7 +362,6 @@
     white-space: pre-wrap;
   }
 
-  /* Score badge */
   .score-row {
     display: flex;
     align-items: center;
@@ -421,7 +407,6 @@
     width: 0%;
   }
 
-  /* Share / upsell */
   .action-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -463,7 +448,6 @@
     border-color: rgba(255,215,0,0.5);
   }
 
-  /* RESET */
   .btn-reset {
     width: 100%;
     padding: 12px;
@@ -482,7 +466,6 @@
     color: var(--pale);
   }
 
-  /* UPSELL CARD */
   .upsell {
     background: linear-gradient(135deg, rgba(255,215,0,0.05), rgba(255,69,0,0.05));
     border: 1px solid rgba(255,215,0,0.2);
@@ -528,7 +511,6 @@
     text-transform: uppercase;
   }
 
-  /* FOOTER */
   footer {
     text-align: center;
     padding: 32px 0 48px;
@@ -537,7 +519,6 @@
     letter-spacing: 0.05em;
   }
 
-  /* ERROR */
   .error-msg {
     display: none;
     background: rgba(255,69,0,0.1);
@@ -591,7 +572,6 @@
     </div>
   </div>
 
-  <!-- INPUT FORM -->
   <div class="card" id="formCard">
     <div class="card-title">Your Monthly Numbers</div>
     <div class="card-sub">All fields are optional — the more you share, the better the roast.</div>
@@ -601,7 +581,6 @@
         <label>Monthly Take-Home Income</label>
         <input type="number" id="income" placeholder="3500" min="0">
       </div>
-
       <div class="field">
         <label>Rent / Mortgage</label>
         <input type="number" id="rent" placeholder="1200" min="0">
@@ -642,7 +621,6 @@
         <label>Debt Payments</label>
         <input type="number" id="debt" placeholder="0" min="0">
       </div>
-
       <div class="field extras-row">
         <label>Anything else? (be honest)</label>
         <textarea id="extras" placeholder="e.g. $200 on DoorDash, $80/mo gym I never use, bought a $400 air fryer last month..."></textarea>
@@ -655,14 +633,12 @@
     <div class="error-msg" id="errorMsg"></div>
   </div>
 
-  <!-- LOADING -->
   <div class="loading-state" id="loadingState">
     <span class="flame-loader">🔥</span>
     <div class="loading-text">Analyzing your financial chaos...</div>
     <div class="loading-sub">Preparing your reality check. This might sting.</div>
   </div>
 
-  <!-- RESULT -->
   <div class="result-card" id="resultCard">
     <div class="result-header">
       <span class="result-emoji">🔥</span>
@@ -688,7 +664,6 @@
     <button class="btn-reset" onclick="resetApp()">← Roast different numbers</button>
   </div>
 
-  <!-- UPSELL -->
   <div class="upsell" id="upsellCard" style="display:none;">
     <div>
       <h3>💰 Money Coach — $9/month</h3>
@@ -720,7 +695,6 @@
     const debt = document.getElementById('debt').value;
     const extras = document.getElementById('extras').value;
 
-    // Build a readable summary
     const lines = [];
     if (income) lines.push(`Monthly take-home income: $${income}`);
     if (rent) lines.push(`Rent/mortgage: $${rent}`);
@@ -769,37 +743,29 @@ BOTTOM LINE:
 Keep the total response under 450 words. Write like a real person, not a financial textbook.`;
 
     try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          messages: [{ role: "user", content: prompt }]
-        })
+      // Calls YOUR serverless function — API key never exposed
+      const response = await fetch('/api/roast', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
       });
 
       const data = await response.json();
       const text = data.content?.map(b => b.text || '').join('') || '';
 
-      // Extract score
       const scoreMatch = text.match(/SCORE:\s*(\d+)/i);
       const score = scoreMatch ? parseInt(scoreMatch[1]) : 50;
-
-      // Clean output — remove the SCORE line, keep the rest
       const cleanText = text.replace(/SCORE:\s*\d+\n?/i, '').trim();
 
       document.getElementById('loadingState').classList.remove('active');
       document.getElementById('resultCard').classList.add('active');
       document.getElementById('roastOutput').textContent = cleanText;
 
-      // Animate score
       document.getElementById('scoreNum').textContent = score;
       setTimeout(() => {
         document.getElementById('scoreFill').style.width = score + '%';
       }, 200);
 
-      // Color code score
       const scoreEl = document.getElementById('scoreNum');
       if (score >= 70) scoreEl.style.color = '#4ade80';
       else if (score >= 40) scoreEl.style.color = '#FFD700';
@@ -812,14 +778,14 @@ Keep the total response under 450 words. Write like a real person, not a financi
       document.getElementById('formCard').style.display = 'block';
       document.getElementById('roastBtn').disabled = false;
       const errorEl = document.getElementById('errorMsg');
-      errorEl.textContent = 'Something went wrong. Check your API key or try again.';
+      errorEl.textContent = 'Something went wrong. Please try again.';
       errorEl.classList.add('active');
     }
   }
 
   function copyRoast() {
     const text = window.lastRoastText || '';
-    navigator.clipboard.writeText('My Money Roast 🔥\n\n' + text + '\n\nGet yours at moneyroast.app').then(() => {
+    navigator.clipboard.writeText('My Money Roast 🔥\n\n' + text + '\n\nGet yours at moneyroast.vercel.app').then(() => {
       const btn = document.querySelector('.btn-share');
       btn.textContent = '✅ Copied!';
       setTimeout(() => btn.textContent = '📋 Copy & Share', 2000);
