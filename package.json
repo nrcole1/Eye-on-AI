@@ -1,0 +1,9 @@
+{
+  "name": "signal-ai",
+  "version": "1.0.0",
+  "description": "Signal/AI — Curated AI news and tools",
+  "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0"
+  }
+}
