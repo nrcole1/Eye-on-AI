@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IT Services — Signal / AI</title>
+<meta name="description" content="Professional IT services: managed IT, cloud infrastructure, security, and AI integration consulting." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05080f;
+    --bg-raised: #0b111c;
+    --bg-card: #0e1624;
+    --border: #1a2435;
+    --border-hover: #2b3a55;
+    --text: #e6edf7;
+    --text-dim: #8a96ac;
+    --text-faint: #546075;
+    --accent: #4d8dff;
+    --accent-soft: #4d8dff22;
+    --accent-glow: #4d8dff66;
+    --accent-alt: #00d9c0;
+    --success: #4ade80;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(77, 141, 255, 0.15), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 40%, rgba(0, 217, 192, 0.05), transparent);
+    background-attachment: fixed;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    z-index: 100;
+    mix-blend-mode: overlay;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(20px);
+    background: rgba(5, 8, 15, 0.7);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .logo-dot {
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 16px var(--accent-glow);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.85); }
+  }
+  .logo em { font-style: italic; font-weight: 400; color: var(--accent); }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+  }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a.services-link {
+    padding: 6px 14px;
+    border: 1px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 6px;
+    color: var(--text);
+  }
+
+  .hero {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 80px 32px 60px;
+    text-align: center;
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    margin-bottom: 32px;
+    background: var(--bg-raised);
+  }
+  .eyebrow::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--success);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--success);
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(42px, 7vw, 88px);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin-bottom: 24px;
+  }
+  h1 em {
+    font-style: italic;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .sub {
+    font-size: 20px;
+    color: var(--text-dim);
+    max-width: 640px;
+    margin: 0 auto 40px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 26px;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+  .btn-primary { background: var(--accent); color: #000; }
+  .btn-primary:hover {
+    background: var(--accent-alt);
+    box-shadow: 0 0 24px var(--accent-glow);
+    transform: translateY(-1px);
+  }
+
+  section { max-width: 1240px; margin: 0 auto; padding: 60px 32px; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+  }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 42px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+  .section-title em { font-style: italic; color: var(--accent); }
+  .section-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  .service-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+  }
+  .service-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.15em;
+    margin-bottom: 20px;
+  }
+  .service-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .service-card p {
+    color: var(--text-dim);
+    font-size: 14.5px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .service-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .service-card li {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    padding: 8px 0;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .service-card li::before {
+    content: '→';
+    color: var(--accent);
+  }
+
+  /* PROCESS */
+  .process {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    counter-reset: step;
+  }
+  .step {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    counter-increment: step;
+    position: relative;
+  }
+  .step::before {
+    content: counter(step, decimal-leading-zero);
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+  .step h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    margin-top: 20px;
+  }
+  .step p {
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  /* CONTACT */
+  .contact-box {
+    background:
+      radial-gradient(ellipse at top left, rgba(77, 141, 255, 0.15), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(0, 217, 192, 0.1), transparent 50%),
+      var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 56px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse at center, black, transparent 70%);
+    opacity: 0.3;
+    pointer-events: none;
+  }
+  .contact-box h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .contact-box h2 em { font-style: italic; color: var(--accent); font-weight: 900; }
+  .contact-box p {
+    color: var(--text-dim);
+    font-size: 18px;
+    max-width: 520px;
+    margin: 0 auto 32px;
+    position: relative;
+  }
+  .contact-form {
+    max-width: 520px;
+    margin: 0 auto;
+    display: grid;
+    gap: 10px;
+    position: relative;
+  }
+  .contact-form input, .contact-form textarea {
+    padding: 14px 18px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.2s;
+  }
+  .contact-form input:focus, .contact-form textarea:focus { border-color: var(--accent); }
+  .contact-form input::placeholder, .contact-form textarea::placeholder { color: var(--text-faint); }
+  .contact-form textarea { min-height: 120px; font-family: 'Inter Tight', sans-serif; }
+  .form-status {
+    margin-top: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    min-height: 20px;
+    position: relative;
+  }
+  .form-status.success { color: var(--success); }
+  .form-status.error { color: #ff6b6b; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 48px 32px;
+    margin-top: 80px;
+  }
+  .footer-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .footer-inner a { color: var(--text-dim); text-decoration: none; margin-left: 24px; }
+  .footer-inner a:hover { color: var(--accent); }
+
+  @media (max-width: 640px) {
+    .nav-links { gap: 16px; }
+    .nav-links a:not(.services-link) { display: none; }
+    .hero { padding: 48px 20px 32px; }
+    section { padding: 40px 20px; }
+    .contact-box { padding: 40px 24px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-dot"></span>
+      Signal<em>/AI</em>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#news">News</a>
+      <a href="index.html#tools">Tools</a>
+      <a href="index.html#newsletter">Newsletter</a>
+      <a href="services.html" class="services-link">IT Services</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="eyebrow">Now accepting clients · 2026</div>
+  <h1>
+    IT that actually<br>
+    <em>works for you.</em>
+  </h1>
+  <p class="sub">
+    Managed IT, infrastructure, security, and AI integration — delivered by
+    someone who obsesses over this stuff daily. No call centers, no hold music.
+  </p>
+  <a href="#contact" class="btn btn-primary">Get in touch →</a>
+</header>
+
+<section>
+  <div class="section-head">
+    <h2 class="section-title">What I <em>do</em></h2>
+    <span class="section-meta">// Core services</span>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-num">01 / MANAGED IT</div>
+      <h3>Managed IT Support</h3>
+      <p>Your help desk, patch management, and day-to-day IT operations — handled. Responsive support so your team stops losing hours to tech issues.</p>
+      <ul>
+        <li>24/7 monitoring</li>
+        <li>Endpoint management</li>
+        <li>User onboarding/offboarding</li>
+        <li>Software licensing</li>
+      </ul>
+    </div>
+
+    <div class="service-card">
+      <div class="service-num">02 / CLOUD</div>
+      <h3>Cloud & Infrastructure</h3>
+      <p>Migrate, modernize, or build from zero on AWS, Azure, or GCP. Infrastructure that scales and doesn't bankrupt you in the process.</p>
+      <ul>
+        <li>Cloud migration</li>
+        <li>Cost optimization</li>
+        <li>Backup & disaster recovery</li>
+        <li>Hybrid setups</li>
+      </ul>
+    </div>
+
+    <div class="service-card">
+      <div class="service-num">03 / SECURITY</div>
+      <h3>Cybersecurity</h3>
+      <p>Practical security that fits your threat model. No fear-mongering, no enterprise-grade bloat — just what you actually need to not get breached.</p>
+      <ul>
+        <li>Security audits</li>
+        <li>MFA & identity management</li>
+        <li>Phishing training</li>
+        <li>Incident response</li>
+      </ul>
+    </div>
+
+    <div class="service-card">
+      <div class="service-num">04 / AI INTEGRATION</div>
+      <h3>AI Integration</h3>
+      <p>Put AI to work in your business without the hype or the mess. From Claude-powered workflows to custom automations that actually save time.</p>
+      <ul>
+        <li>Workflow automation</li>
+        <li>Custom AI assistants</li>
+        <li>Team training</li>
+        <li>Tool selection & rollout</li>
+      </ul>
+    </div>
+
+    <div class="service-card">
+      <div class="service-num">05 / NETWORKING</div>
+      <h3>Network Setup</h3>
+      <p>Office networks, VPNs, remote work setups. Done right the first time so you're not troubleshooting WiFi forever.</p>
+      <ul>
+        <li>Office network design</li>
+        <li>VPN configuration</li>
+        <li>Remote work setup</li>
+        <li>Network performance audits</li>
+      </ul>
+    </div>
+
+    <div class="service-card">
+      <div class="service-num">06 / CONSULTING</div>
+      <h3>IT Consulting</h3>
+      <p>One-off advice, second opinions, tech strategy sessions. Sometimes you just need someone who's seen this before.</p>
+      <ul>
+        <li>Tech stack review</li>
+        <li>Vendor evaluation</li>
+        <li>Strategy sessions</li>
+        <li>Project planning</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <h2 class="section-title">How it <em>goes</em></h2>
+    <span class="section-meta">// Process</span>
+  </div>
+
+  <div class="process">
+    <div class="step">
+      <h4>Discovery call</h4>
+      <p>Free 30-minute call. We talk about what you're running, what's broken, what's working.</p>
+    </div>
+    <div class="step">
+      <h4>Scoped proposal</h4>
+      <p>Clear plan, clear pricing. No surprise line items, no vague "managed services" pricing.</p>
+    </div>
+    <div class="step">
+      <h4>Execution</h4>
+      <p>Work starts fast. Weekly check-ins so you always know what's happening.</p>
+    </div>
+    <div class="step">
+      <h4>Ongoing support</h4>
+      <p>Monthly retainer or as-needed. Whichever fits. Most clients start retainer after project 1.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-box">
+    <h2>Let's <em>talk.</em></h2>
+    <p>Tell me a bit about what you're working with. I usually respond within a day.</p>
+
+    <form class="contact-form" id="contactForm">
+      <input type="text" name="name" placeholder="Your name" required />
+      <input type="email" name="email" placeholder="you@company.com" required />
+      <input type="text" name="company" placeholder="Company (optional)" />
+      <textarea name="message" placeholder="What's going on? What do you need help with?" required></textarea>
+      <button type="submit" class="btn btn-primary">Send message →</button>
+    </form>
+    <div class="form-status" id="formStatus"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>© 2026 Signal/AI</div>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="index.html#tools">Tools</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const form = document.getElementById('contactForm');
+  const status = document.getElementById('formStatus');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const payload = {
+      name: form.name.value.trim(),
+      email: form.email.value.trim(),
+      company: form.company.value.trim(),
+      message: form.message.value.trim()
+    };
+
+    status.textContent = 'Sending...';
+    status.className = 'form-status';
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        status.textContent = '✓ Got it. I\'ll be in touch within a day.';
+        status.className = 'form-status success';
+        form.reset();
+      } else {
+        status.textContent = data.error || 'Something went wrong. Try again.';
+        status.className = 'form-status error';
+      }
+    } catch (err) {
+      status.textContent = 'Connection error. Try again.';
+      status.className = 'form-status error';
+    }
+  });
+</script>
+
+</body>
+</html>
