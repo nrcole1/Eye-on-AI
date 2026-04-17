@@ -1,383 +1,920 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MONEY ROAST — Get Financially Destroyed</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Signal / AI — Cutting through the noise in AI</title>
+<meta name="description" content="Curated AI news and the best-rated AI tools, delivered weekly. No hype. No filler. Just signal." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --fire: #FF4500;
-    --ember: #FF8C00;
-    --gold: #FFD700;
-    --char: #0a0a0a;
-    --ash: #1a1a1a;
-    --smoke: #2a2a2a;
-    --pale: #f0ece4;
+    --bg: #05080f;
+    --bg-raised: #0b111c;
+    --bg-card: #0e1624;
+    --border: #1a2435;
+    --border-hover: #2b3a55;
+    --text: #e6edf7;
+    --text-dim: #8a96ac;
+    --text-faint: #546075;
+    --accent: #4d8dff;
+    --accent-soft: #4d8dff22;
+    --accent-glow: #4d8dff66;
+    --accent-alt: #00d9c0;
+    --warn: #ffb347;
+    --success: #4ade80;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--char); color: var(--pale); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(77, 141, 255, 0.15), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 40%, rgba(0, 217, 192, 0.05), transparent);
+    background-attachment: fixed;
+  }
+
+  /* Noise texture overlay */
   body::before {
     content: '';
-    position: fixed; inset: 0;
-    background:
-      radial-gradient(ellipse 60% 40% at 20% 80%, rgba(255,69,0,0.12) 0%, transparent 60%),
-      radial-gradient(ellipse 40% 60% at 80% 20%, rgba(255,140,0,0.08) 0%, transparent 50%),
-      radial-gradient(ellipse 80% 30% at 50% 100%, rgba(255,69,0,0.06) 0%, transparent 40%);
-    pointer-events: none; z-index: 0;
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    z-index: 100;
+    mix-blend-mode: overlay;
   }
-  .container { position: relative; z-index: 1; max-width: 780px; margin: 0 auto; padding: 0 24px; }
-  header { padding: 48px 0 0; text-align: center; }
-  .badge { display: inline-block; background: var(--fire); color: white; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; padding: 5px 14px; border-radius: 2px; margin-bottom: 20px; }
-  h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(72px, 15vw, 130px); line-height: 0.88; letter-spacing: 0.02em; background: linear-gradient(160deg, #fff 0%, #FFD700 40%, #FF8C00 70%, #FF4500 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .tagline { font-size: 16px; font-weight: 300; color: rgba(240,236,228,0.6); margin-top: 16px; font-style: italic; }
-  .tagline span { color: var(--gold); font-style: normal; font-weight: 600; }
-  .divider { display: flex; align-items: center; gap: 16px; margin: 40px 0; opacity: 0.3; }
-  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--fire); }
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 40px; }
-  .step { background: var(--ash); border: 1px solid rgba(255,69,0,0.15); border-radius: 8px; padding: 20px 16px; text-align: center; }
-  .step-num { font-family: 'Bebas Neue', sans-serif; font-size: 42px; color: var(--fire); opacity: 0.4; line-height: 1; margin-bottom: 8px; }
-  .step-title { font-size: 13px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
-  .step p { font-size: 12px; color: rgba(240,236,228,0.5); line-height: 1.5; }
-  .card { background: var(--ash); border: 1px solid rgba(255,69,0,0.2); border-radius: 12px; padding: 36px; margin-bottom: 24px; position: relative; overflow: hidden; }
-  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--fire), var(--ember), var(--gold)); }
-  .card-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.05em; margin-bottom: 6px; }
-  .card-sub { font-size: 13px; color: rgba(240,236,228,0.45); margin-bottom: 28px; }
-  .expense-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
-  .field { display: flex; flex-direction: column; gap: 6px; }
-  .field label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(240,236,228,0.5); }
-  .field input { background: var(--smoke); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 11px 14px; color: var(--pale); font-family: 'DM Sans', sans-serif; font-size: 15px; transition: border-color 0.2s; -webkit-appearance: none; }
-  .field input::placeholder { color: rgba(240,236,228,0.2); }
-  .field input:focus { outline: none; border-color: var(--fire); background: rgba(255,69,0,0.05); }
-  .field input:not(:placeholder-shown) { border-color: rgba(255,140,0,0.3); }
-  .income-field { grid-column: span 2; background: rgba(255,215,0,0.04); border: 1px solid rgba(255,215,0,0.15); border-radius: 8px; padding: 16px; }
-  .income-field label { color: var(--gold) !important; }
-  .income-field input { background: transparent; border-color: rgba(255,215,0,0.2); font-size: 22px; font-weight: 600; }
-  .extras-row { grid-column: span 2; display: flex; flex-direction: column; gap: 6px; }
-  .extras-row textarea { background: var(--smoke); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 11px 14px; color: var(--pale); font-family: 'DM Sans', sans-serif; font-size: 14px; resize: vertical; min-height: 70px; line-height: 1.5; }
-  .extras-row textarea::placeholder { color: rgba(240,236,228,0.2); }
-  .extras-row textarea:focus { outline: none; border-color: var(--fire); }
-  .roast-btn { width: 100%; padding: 18px; background: linear-gradient(135deg, var(--fire) 0%, #ff2200 100%); color: white; border: none; border-radius: 8px; font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.08em; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; box-shadow: 0 4px 30px rgba(255,69,0,0.4); margin-top: 8px; }
-  .roast-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(255,69,0,0.6); }
-  .roast-btn:active { transform: translateY(0); }
-  .roast-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-  .loading-state { display: none; text-align: center; padding: 48px 0; }
-  .loading-state.active { display: block; }
-  .flame-loader { font-size: 48px; animation: flicker 0.4s ease-in-out infinite alternate; display: block; margin-bottom: 16px; }
-  @keyframes flicker { from { transform: scale(1) rotate(-3deg); opacity: 0.8; } to { transform: scale(1.15) rotate(3deg); opacity: 1; } }
-  .loading-text { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.1em; color: var(--fire); }
-  .loading-sub { font-size: 13px; color: rgba(240,236,228,0.35); margin-top: 6px; font-style: italic; }
-  .result-card { display: none; background: var(--ash); border: 1px solid rgba(255,69,0,0.3); border-radius: 12px; padding: 36px; margin-bottom: 24px; position: relative; overflow: hidden; }
-  .result-card.active { display: block; animation: slideUp 0.5s ease-out; }
-  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-  .result-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--fire), var(--ember), var(--gold), var(--ember), var(--fire)); background-size: 200% 100%; animation: shimmer 2s linear infinite; }
-  @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
-  .result-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
-  .result-emoji { font-size: 36px; }
-  .result-title { font-family: 'Bebas Neue', sans-serif; font-size: 32px; background: linear-gradient(90deg, var(--fire), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .result-sub { font-size: 13px; color: rgba(240,236,228,0.4); }
-  .score-row { display: flex; align-items: center; gap: 12px; margin: 24px 0; padding: 16px 20px; background: rgba(255,69,0,0.08); border: 1px solid rgba(255,69,0,0.2); border-radius: 8px; }
-  .score-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(240,236,228,0.5); flex: 1; }
-  .score-number { font-family: 'Bebas Neue', sans-serif; font-size: 38px; color: var(--fire); line-height: 1; }
-  .score-max { font-size: 13px; color: rgba(240,236,228,0.3); align-self: flex-end; padding-bottom: 4px; }
-  .score-bar { flex: 2; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
-  .score-fill { height: 100%; background: linear-gradient(90deg, var(--fire), var(--gold)); border-radius: 3px; transition: width 1s cubic-bezier(0.4,0,0.2,1); width: 0%; }
-  .roast-sections { display: flex; flex-direction: column; gap: 20px; margin-top: 8px; }
-  .roast-section { border-radius: 8px; padding: 20px 22px; }
-  .roast-section.fire-section { background: rgba(255,69,0,0.07); border: 1px solid rgba(255,69,0,0.2); }
-  .roast-section.fix-section { background: rgba(255,215,0,0.05); border: 1px solid rgba(255,215,0,0.15); }
-  .roast-section.bottom-section { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); text-align: center; }
-  .roast-section.fallback-section { background: rgba(255,69,0,0.05); border: 1px solid rgba(255,69,0,0.15); }
-  .section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-  .fire-section .section-label { color: var(--fire); }
-  .fix-section .section-label { color: var(--gold); }
-  .bottom-section .section-label { color: rgba(240,236,228,0.3); justify-content: center; }
-  .fallback-section .section-label { color: var(--fire); }
-  .section-label::after { content: ''; flex: 1; height: 1px; opacity: 0.3; }
-  .fire-section .section-label::after { background: var(--fire); }
-  .fix-section .section-label::after { background: var(--gold); }
-  .bottom-section .section-label::after { display: none; }
-  .fallback-section .section-label::after { background: var(--fire); }
-  .section-body { font-size: 15px; line-height: 1.8; color: var(--pale); }
-  .section-body p { margin-bottom: 12px; }
-  .section-body p:last-child { margin-bottom: 0; }
-  .fix-item { display: flex; gap: 14px; margin-bottom: 14px; align-items: flex-start; }
-  .fix-item:last-child { margin-bottom: 0; }
-  .fix-num { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--gold); opacity: 0.7; line-height: 1.2; min-width: 24px; }
-  .fix-text { font-size: 14px; line-height: 1.65; color: rgba(240,236,228,0.85); }
-  .bottom-line { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.04em; color: var(--pale); line-height: 1.3; }
-  .action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
-  .btn-share { padding: 13px; background: var(--smoke); border: 1px solid rgba(255,255,255,0.1); border-radius: 7px; color: var(--pale); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-  .btn-share:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.05); }
-  .btn-upgrade { padding: 13px; background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,0,0.1)); border: 1px solid rgba(255,215,0,0.3); border-radius: 7px; color: var(--gold); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-  .btn-upgrade:hover { background: linear-gradient(135deg, rgba(255,215,0,0.25), rgba(255,140,0,0.15)); border-color: rgba(255,215,0,0.5); }
-  .btn-reset { width: 100%; padding: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 7px; color: rgba(240,236,228,0.4); font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; transition: all 0.2s; margin-top: 12px; }
-  .btn-reset:hover { border-color: rgba(255,255,255,0.2); color: var(--pale); }
-  .upsell { background: linear-gradient(135deg, rgba(255,215,0,0.05), rgba(255,69,0,0.05)); border: 1px solid rgba(255,215,0,0.2); border-radius: 12px; padding: 28px 32px; margin-bottom: 32px; display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; }
-  .upsell h3 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--gold); margin-bottom: 6px; letter-spacing: 0.05em; }
-  .upsell p { font-size: 13px; color: rgba(240,236,228,0.5); line-height: 1.5; }
-  .upsell-price { text-align: center; padding: 16px 20px; background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.2); border-radius: 8px; white-space: nowrap; }
-  .price-amt { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--gold); line-height: 1; display: block; }
-  .price-per { font-size: 11px; color: rgba(240,236,228,0.35); letter-spacing: 0.08em; text-transform: uppercase; }
-  footer { text-align: center; padding: 32px 0 48px; font-size: 12px; color: rgba(240,236,228,0.2); letter-spacing: 0.05em; }
-  .error-msg { display: none; background: rgba(255,69,0,0.1); border: 1px solid rgba(255,69,0,0.3); border-radius: 6px; padding: 12px 16px; font-size: 13px; color: #ff8a7a; margin-top: 12px; }
-  .error-msg.active { display: block; }
-  @media (max-width: 580px) {
-    .expense-grid { grid-template-columns: 1fr; }
-    .income-field, .extras-row { grid-column: span 1; }
-    .steps, .action-row { grid-template-columns: 1fr; }
-    .upsell { grid-template-columns: 1fr; }
-    .card, .result-card { padding: 24px 20px; }
+
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .serif { font-family: 'Fraunces', serif; }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(20px);
+    background: rgba(5, 8, 15, 0.7);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .logo-dot {
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 16px var(--accent-glow);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.85); }
+  }
+  .logo em { font-style: italic; font-weight: 400; color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+  }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a.services-link {
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+  }
+  .nav-links a.services-link:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  /* HERO */
+  .hero {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 100px 32px 80px;
+    text-align: center;
+    position: relative;
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    margin-bottom: 32px;
+    background: var(--bg-raised);
+  }
+  .eyebrow::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--success);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--success);
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(48px, 8vw, 104px);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin-bottom: 28px;
+  }
+  h1 em {
+    font-style: italic;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .sub {
+    font-size: 20px;
+    color: var(--text-dim);
+    max-width: 620px;
+    margin: 0 auto 48px;
+    line-height: 1.5;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 26px;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+  }
+  .btn-primary:hover {
+    background: var(--accent-alt);
+    box-shadow: 0 0 24px var(--accent-glow);
+    transform: translateY(-1px);
+  }
+  .btn-ghost {
+    border-color: var(--border);
+    color: var(--text);
+    background: transparent;
+  }
+  .btn-ghost:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  /* SECTION */
+  section { max-width: 1240px; margin: 0 auto; padding: 80px 32px; }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+  }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 42px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+  .section-title em { font-style: italic; color: var(--accent); }
+  .section-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* NEWS GRID */
+  .news-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 900px) { .news-grid { grid-template-columns: 1fr; } }
+
+  .news-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.25s;
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+  .news-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+  }
+  .news-card::after {
+    content: '↗';
+    position: absolute;
+    top: 24px; right: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    color: var(--text-faint);
+    transition: all 0.25s;
+  }
+  .news-card:hover::after {
+    color: var(--accent);
+    transform: translate(4px, -4px);
+  }
+  .news-card.featured {
+    grid-row: span 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 380px;
+    background: linear-gradient(135deg, var(--bg-card), #0a1020);
+  }
+
+  .card-meta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+  }
+  .tag {
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .news-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .news-card.featured h3 { font-size: 36px; line-height: 1.1; }
+  .news-card p {
+    color: var(--text-dim);
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  .news-source {
+    margin-top: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  /* TOOLS */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  .tool-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.25s;
+    position: relative;
+  }
+  .tool-card:hover {
+    border-color: var(--accent);
+    background: var(--bg-raised);
+  }
+  .tool-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .tool-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 20px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+    color: #000;
+  }
+  .tool-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--warn);
+  }
+  .tool-name {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .tool-category {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 14px;
+  }
+  .tool-desc {
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.55;
+    margin-bottom: 16px;
+  }
+  .tool-price {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent-alt);
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* FILTER */
+  .filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .filter-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+  .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+    font-weight: 500;
+  }
+
+  /* NEWSLETTER */
+  .newsletter {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 80px 32px;
+  }
+  .newsletter-box {
+    background:
+      radial-gradient(ellipse at top left, rgba(77, 141, 255, 0.15), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(0, 217, 192, 0.1), transparent 50%),
+      var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 64px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .newsletter-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse at center, black, transparent 70%);
+    opacity: 0.3;
+    pointer-events: none;
+  }
+  .newsletter h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .newsletter h2 em { font-style: italic; color: var(--accent); font-weight: 900; }
+  .newsletter p {
+    color: var(--text-dim);
+    font-size: 18px;
+    max-width: 500px;
+    margin: 0 auto 36px;
+    position: relative;
+  }
+  .email-form {
+    display: flex;
+    gap: 8px;
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .email-form input {
+    flex: 1;
+    padding: 14px 18px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .email-form input:focus { border-color: var(--accent); }
+  .email-form input::placeholder { color: var(--text-faint); }
+  .newsletter-note {
+    margin-top: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    position: relative;
+  }
+  .form-status {
+    margin-top: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    min-height: 20px;
+    position: relative;
+  }
+  .form-status.success { color: var(--success); }
+  .form-status.error { color: #ff6b6b; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 48px 32px;
+    margin-top: 80px;
+  }
+  .footer-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .footer-inner a { color: var(--text-dim); text-decoration: none; margin-left: 24px; }
+  .footer-inner a:hover { color: var(--accent); }
+
+  /* Stagger animation */
+  .fade-in { opacity: 0; animation: fadeUp 0.8s ease-out forwards; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in:nth-child(1) { animation-delay: 0.05s; }
+  .fade-in:nth-child(2) { animation-delay: 0.15s; }
+  .fade-in:nth-child(3) { animation-delay: 0.25s; }
+  .fade-in:nth-child(4) { animation-delay: 0.35s; }
+  .fade-in:nth-child(5) { animation-delay: 0.45s; }
+  .fade-in:nth-child(6) { animation-delay: 0.55s; }
+
+  @media (max-width: 640px) {
+    .nav-links { gap: 16px; }
+    .nav-links a:not(.services-link) { display: none; }
+    .hero { padding: 60px 20px 40px; }
+    section { padding: 48px 20px; }
+    .newsletter { padding: 48px 20px; }
+    .newsletter-box { padding: 40px 24px; }
+    .email-form { flex-direction: column; }
+    .section-head { flex-direction: column; align-items: flex-start; }
   }
 </style>
 </head>
 <body>
-<div class="container">
-  <header>
-    <div class="badge">🔥 Free Financial Reality Check</div>
-    <h1>MONEY<br>ROAST</h1>
-    <p class="tagline">Paste your expenses. Get <span>brutally honest</span> feedback.</p>
-  </header>
 
-  <div class="divider"><span style="font-size:18px">🔥</span></div>
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <span class="logo-dot"></span>
+      Signal<em>/AI</em>
+    </a>
+    <div class="nav-links">
+      <a href="#news">News</a>
+      <a href="#tools">Tools</a>
+      <a href="#newsletter">Newsletter</a>
+      <a href="services.html" class="services-link">IT Services →</a>
+    </div>
+  </div>
+</nav>
 
-  <div class="steps">
-    <div class="step"><div class="step-num">01</div><div class="step-title">Enter Your Numbers</div><p>Monthly income and where your money actually goes</p></div>
-    <div class="step"><div class="step-num">02</div><div class="step-title">Get Roasted</div><p>AI delivers your financial reality check — no sugarcoating</p></div>
-    <div class="step"><div class="step-num">03</div><div class="step-title">Get A Plan</div><p>Concrete steps to actually fix your money situation</p></div>
+<!-- HERO -->
+<header class="hero">
+  <div class="eyebrow">Live / Updated daily</div>
+  <h1>
+    Cut through<br>
+    the <em>AI noise.</em>
+  </h1>
+  <p class="sub">
+    Hand-picked AI news and the best-rated tools, without the hype cycles
+    and thread-boy takes. One newsletter. Real signal.
+  </p>
+  <div class="hero-actions">
+    <a href="#newsletter" class="btn btn-primary">Get the newsletter →</a>
+    <a href="#tools" class="btn btn-ghost">Browse tools</a>
+  </div>
+</header>
+
+<!-- NEWS (dynamic — loaded from /api/articles) -->
+<section id="news">
+  <div class="section-head">
+    <h2 class="section-title">Curated <em>signal</em></h2>
+    <span class="section-meta" id="curatedMeta">// Hand-picked</span>
+  </div>
+  <div id="featuredContainer" class="news-grid">
+    <div class="news-card" style="grid-column: 1/-1; text-align: center; color: var(--text-faint); padding: 48px;">
+      Loading the latest…
+    </div>
   </div>
 
-  <div class="card" id="formCard">
-    <div class="card-title">Your Monthly Numbers</div>
-    <div class="card-sub">All fields optional — the more you share, the harder the roast.</div>
-    <div class="expense-grid">
-      <div class="field income-field">
-        <label>Monthly Take-Home Income</label>
-        <input type="number" id="income" placeholder="3500" min="0">
+  <div class="section-head" style="margin-top: 64px;">
+    <h2 class="section-title" style="font-size: 28px;">Latest <em>from the feeds</em></h2>
+    <span class="section-meta">// Auto-updated from trusted sources</span>
+  </div>
+  <div id="latestContainer" class="news-grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));"></div>
+</section>
+
+<!-- TOOLS -->
+<section id="tools">
+  <div class="section-head">
+    <h2 class="section-title">Tools <em>worth your time</em></h2>
+    <span class="section-meta">// 24 tools · Ratings from real users</span>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="writing">Writing</button>
+    <button class="filter-btn" data-filter="coding">Coding</button>
+    <button class="filter-btn" data-filter="image">Image</button>
+    <button class="filter-btn" data-filter="video">Video</button>
+    <button class="filter-btn" data-filter="productivity">Productivity</button>
+    <button class="filter-btn" data-filter="research">Research</button>
+  </div>
+
+  <div class="tools-grid" id="toolsGrid">
+    <a href="https://claude.ai" target="_blank" rel="noopener" class="tool-card fade-in" data-cat="writing">
+      <div class="tool-head">
+        <div class="tool-icon">C</div>
+        <div class="tool-rating">★ 4.9</div>
       </div>
-      <div class="field"><label>Rent / Mortgage</label><input type="number" id="rent" placeholder="1200" min="0"></div>
-      <div class="field"><label>Groceries</label><input type="number" id="groceries" placeholder="400" min="0"></div>
-      <div class="field"><label>Eating Out / Takeout</label><input type="number" id="dining" placeholder="300" min="0"></div>
-      <div class="field"><label>Subscriptions</label><input type="number" id="subscriptions" placeholder="80" min="0"></div>
-      <div class="field"><label>Transportation / Gas</label><input type="number" id="transport" placeholder="200" min="0"></div>
-      <div class="field"><label>Entertainment</label><input type="number" id="entertainment" placeholder="150" min="0"></div>
-      <div class="field"><label>Shopping / Clothes</label><input type="number" id="shopping" placeholder="100" min="0"></div>
-      <div class="field"><label>Coffee / Drinks</label><input type="number" id="coffee" placeholder="60" min="0"></div>
-      <div class="field"><label>Current Savings / Month</label><input type="number" id="savings" placeholder="0" min="0"></div>
-      <div class="field"><label>Debt Payments</label><input type="number" id="debt" placeholder="0" min="0"></div>
-      <div class="field extras-row">
-        <label>Anything else? (be honest)</label>
-        <textarea id="extras" placeholder="e.g. $200 on DoorDash, $80/mo gym I never use, bought a $400 air fryer last month..."></textarea>
+      <div class="tool-name">Claude</div>
+      <div class="tool-category">Conversational AI · Writing · Analysis</div>
+      <div class="tool-desc">Anthropic's flagship assistant. Strong at long-context analysis, careful reasoning, and nuanced writing.</div>
+      <div class="tool-price">Free tier · Pro $20/mo</div>
+    </a>
+
+    <a href="https://cursor.sh" target="_blank" rel="noopener" class="tool-card fade-in" data-cat="coding">
+      <div class="tool-head">
+        <div class="tool-icon" style="background: linear-gradient(135deg, #000, #333);">▲</div>
+        <div class="tool-rating">★ 4.8</div>
       </div>
-    </div>
-    <button class="roast-btn" id="roastBtn" onclick="getRoasted()">🔥 ROAST MY FINANCES 🔥</button>
-    <div class="error-msg" id="errorMsg"></div>
-  </div>
+      <div class="tool-name">Cursor</div>
+      <div class="tool-category">AI Code Editor</div>
+      <div class="tool-desc">VS Code fork built around AI pair programming. Agent mode handles multi-file changes.</div>
+      <div class="tool-price">Free tier · Pro $20/mo</div>
+    </a>
 
-  <div class="loading-state" id="loadingState">
-    <span class="flame-loader">🔥</span>
-    <div class="loading-text">Sharpening the knives...</div>
-    <div class="loading-sub">Your financial crimes are being reviewed. Brace yourself.</div>
-  </div>
-
-  <div class="result-card" id="resultCard">
-    <div class="result-header">
-      <span class="result-emoji">🔥</span>
-      <div>
-        <div class="result-title">YOUR FINANCIAL ROAST</div>
-        <div class="result-sub">Delivered with love (and zero mercy)</div>
+    <a href="https://www.perplexity.ai" target="_blank" rel="noopener" class="tool-card fade-in" data-cat="research">
+      <div class="tool-head">
+        <div class="tool-icon" style="background: linear-gradient(135deg, #20b8cd, #1a8a9c);">P</div>
+        <div class="tool-rating">★ 4.7</div>
       </div>
-    </div>
-    <div class="score-row">
-      <div class="score-label">Money Health Score</div>
-      <div class="score-number" id="scoreNum">--</div>
-      <div class="score-max">/100</div>
-      <div class="score-bar"><div class="score-fill" id="scoreFill"></div></div>
-    </div>
-    <div class="roast-sections" id="roastSections"></div>
-    <div class="action-row">
-      <button class="btn-share" onclick="copyRoast()">📋 Copy & Share</button>
-      <button class="btn-upgrade" onclick="showUpgrade()">⭐ Get Monthly Coaching</button>
-    </div>
-    <button class="btn-reset" onclick="resetApp()">← Roast different numbers</button>
-  </div>
+      <div class="tool-name">Perplexity</div>
+      <div class="tool-category">AI Search & Research</div>
+      <div class="tool-desc">Answers with citations. Best-in-class for quick research and fact-checking.</div>
+      <div class="tool-price">Free · Pro $20/mo</div>
+    </a>
 
-  <div class="upsell" id="upsellCard" style="display:none;">
+    <a href="https://midjourney.com" target="_blank" rel="noopener" class="tool-card fade-in" data-cat="image">
+      <div class="tool-head">
+        <div class="tool-icon" style="background: linear-gradient(135deg, #fff, #ccc); color: #000;">M</div>
+        <div class="tool-rating">★ 4.8</div>
+      </div>
+      <div class="tool-name">Midjourney</div>
+      <div class="tool-category">AI Image Generation</div>
+      <div class="tool-desc">Still the gold standard for aesthetic, stylized imagery. v7 is a serious leap.</div>
+      <div class="tool-price">From $10/mo</div>
+    </a>
+
+    <a href="https://runwayml.com" target="_blank" rel="noopener" class="tool-card fade-in" data-cat="video">
+      <div class="tool-head">
+        <div class="tool-icon" style="background: linear-gradient(135deg, #ff4d4d, #cc0000);">R</div>
+        <div class="tool-rating">★ 4.6</div>
+      </div>
+      <div class="tool-name">Runway</div>
+      <div class="tool-category">AI Video Generation</div>
+      <div class="tool-desc">Gen-4 delivers the most production-ready video output available today.</div>
+      <div class="tool-price">Free tier · From $15/mo</div>
+    </a>
+
+    <a href="https://notion.so" target="_blank" rel="noopener" class="tool-card fade-in" data-cat="productivity">
+      <div class="tool-head">
+        <div class="tool-icon" style="background: #fff; color: #000;">N</div>
+        <div class="tool-rating">★ 4.5</div>
+      </div>
+      <div class="tool-name">Notion AI</div>
+      <div class="tool-category">AI-Powered Workspace</div>
+      <div class="tool-desc">Summaries, action items, and Q&A across all your docs. Tight integration is the killer feature.</div>
+      <div class="tool-price">$10/mo add-on</div>
+    </a>
+
+    <a href="https://github.com/features/copilot" target="_blank" rel="noopener" class="tool-card fade-in" data-cat="coding">
+      <div class="tool-head">
+        <div class="tool-icon" style="background: #fff; color: #000;">G</div>
+        <div class="tool-rating">★ 4.5</div>
+      </div>
+      <div class="tool-name">GitHub Copilot</div>
+      <div class="tool-category">AI Coding Assistant</div>
+      <div class="tool-desc">The original. Now bundled with multiple models and agentic features.</div>
+      <div class="tool-price">$10-19/mo</div>
+    </a>
+
+    <a href="https://elevenlabs.io" target="_blank" rel="noopener" class="tool-card fade-in" data-cat="video">
+      <div class="tool-head">
+        <div class="tool-icon" style="background: linear-gradient(135deg, #000, #444);">◉</div>
+        <div class="tool-rating">★ 4.8</div>
+      </div>
+      <div class="tool-name">ElevenLabs</div>
+      <div class="tool-category">AI Voice · Audio</div>
+      <div class="tool-desc">Best-in-class voice cloning and TTS. Used by most major podcasts doing AI audio.</div>
+      <div class="tool-price">Free · From $5/mo</div>
+    </a>
+
+    <a href="https://chat.openai.com" target="_blank" rel="noopener" class="tool-card fade-in" data-cat="writing">
+      <div class="tool-head">
+        <div class="tool-icon" style="background: linear-gradient(135deg, #10a37f, #0d7a5e);">O</div>
+        <div class="tool-rating">★ 4.6</div>
+      </div>
+      <div class="tool-name">ChatGPT</div>
+      <div class="tool-category">Conversational AI · General</div>
+      <div class="tool-desc">Biggest ecosystem. Custom GPTs and the operator mode keep extending the platform.</div>
+      <div class="tool-price">Free · Plus $20/mo</div>
+    </a>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter" id="newsletter">
+  <div class="newsletter-box">
+    <h2>One email. <em>Every Sunday.</em></h2>
+    <p>The 5 things in AI that actually matter this week, plus 1 new tool worth testing. No hype, no threads, no hedging.</p>
+
+    <form class="email-form" id="newsletterForm">
+      <input type="email" name="email" placeholder="you@domain.com" required />
+      <button type="submit" class="btn btn-primary">Subscribe</button>
+    </form>
+    <div class="form-status" id="formStatus"></div>
+    <div class="newsletter-note">Free · Unsubscribe anytime · Zero spam, ever</div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>© 2026 Signal/AI</div>
     <div>
-      <h3>💰 Money Coach — $9/month</h3>
-      <p>Track your spending month-over-month, get personalized savings goals, weekly check-ins, and watch your score climb. Cancel anytime.</p>
-    </div>
-    <div class="upsell-price">
-      <span class="price-amt">$9</span>
-      <span class="price-per">per month</span>
+      <a href="services.html">IT Services</a>
+      <a href="#news">News</a>
+      <a href="#tools">Tools</a>
+      <a href="mailto:hello@example.com">Contact</a>
     </div>
   </div>
-
-  <footer>MONEY ROAST · Free financial honesty · Your data never stored</footer>
-</div>
+</footer>
 
 <script>
-  function parseRoast(text) {
-    // Normalize line endings
-    const t = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  // Filter tools
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const toolCards = document.querySelectorAll('.tool-card');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      toolCards.forEach(card => {
+        if (filter === 'all' || card.dataset.cat === filter) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
 
-    // Extract score — very permissive
-    const scoreMatch = t.match(/SCORE:\s*(\d+)/i);
-    const score = scoreMatch ? parseInt(scoreMatch[1]) : null;
+  // Newsletter form
+  const form = document.getElementById('newsletterForm');
+  const status = document.getElementById('formStatus');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = form.email.value.trim();
+    if (!email) return;
 
-    // Split on known section headers — handle bold markdown, colons, newlines
-    // Headers: ROAST, THE FIX (or THEFIX or FIX), BOTTOM LINE
-    const roastMatch = t.match(/(?:^|\n)\*{0,2}ROAST:?\*{0,2}\s*\n([\s\S]*?)(?=\n\*{0,2}(?:THE\s*)?FIX:?\*{0,2}|\n\*{0,2}BOTTOM\s*LINE:?\*{0,2}|$)/i);
-    const fixMatch   = t.match(/(?:^|\n)\*{0,2}(?:THE\s*)?FIX:?\*{0,2}\s*\n([\s\S]*?)(?=\n\*{0,2}BOTTOM\s*LINE:?\*{0,2}|$)/i);
-    const bottomMatch = t.match(/(?:^|\n)\*{0,2}BOTTOM\s*LINE:?\*{0,2}\s*\n([\s\S]*?)$/i);
-
-    return {
-      score,
-      roast: roastMatch ? roastMatch[1].trim() : null,
-      fix:   fixMatch   ? fixMatch[1].trim()   : null,
-      bottom: bottomMatch ? bottomMatch[1].trim() : null,
-      raw: t
-    };
-  }
-
-  function renderSections(parsed, sectionsEl) {
-    sectionsEl.innerHTML = '';
-
-    // If we got proper sections, render them styled
-    if (parsed.roast || parsed.fix || parsed.bottom) {
-
-      if (parsed.roast) {
-        const paras = parsed.roast.split(/\n\n+/).filter(p => p.trim());
-        const d = document.createElement('div');
-        d.className = 'roast-section fire-section';
-        d.innerHTML = `<div class="section-label">🔥 The Roast</div>
-          <div class="section-body">${paras.map(p => `<p>${p.replace(/\n/g,' ').trim()}</p>`).join('')}</div>`;
-        sectionsEl.appendChild(d);
-      }
-
-      if (parsed.fix) {
-        const lines = parsed.fix.split(/\n/).filter(l => l.trim());
-        const items = lines.map(line => {
-          // Remove markdown bold
-          line = line.replace(/\*\*/g, '');
-          const m = line.match(/^(\d+)[.)]\s*(.*)/);
-          if (m) return `<div class="fix-item"><span class="fix-num">${m[1]}</span><span class="fix-text">${m[2]}</span></div>`;
-          return `<div class="fix-item"><span class="fix-text">${line}</span></div>`;
-        }).join('');
-        const d = document.createElement('div');
-        d.className = 'roast-section fix-section';
-        d.innerHTML = `<div class="section-label">💡 The Fix</div><div class="section-body">${items}</div>`;
-        sectionsEl.appendChild(d);
-      }
-
-      if (parsed.bottom) {
-        const d = document.createElement('div');
-        d.className = 'roast-section bottom-section';
-        d.innerHTML = `<div class="section-label">— Bottom Line —</div>
-          <div class="bottom-line">${parsed.bottom.replace(/\*\*/g,'').trim()}</div>`;
-        sectionsEl.appendChild(d);
-      }
-
-    } else {
-      // Fallback: just show everything after the score line as plain text
-      const withoutScore = parsed.raw.replace(/SCORE:\s*\d+\s*/i, '').trim();
-      const d = document.createElement('div');
-      d.className = 'roast-section fallback-section';
-      const paras = withoutScore.split(/\n\n+/).filter(p => p.trim());
-      d.innerHTML = `<div class="section-label">🔥 Your Roast</div>
-        <div class="section-body">${paras.map(p => `<p>${p.replace(/\*\*/g,'').replace(/\n/g,' ').trim()}</p>`).join('')}</div>`;
-      sectionsEl.appendChild(d);
-    }
-  }
-
-  async function getRoasted() {
-    const ids = ['income','rent','groceries','dining','subscriptions','transport','entertainment','shopping','coffee','savings','debt','extras'];
-    const labels = { income:'Monthly take-home income', rent:'Rent/mortgage', groceries:'Groceries', dining:'Eating out/takeout', subscriptions:'Subscriptions', transport:'Transportation/gas', entertainment:'Entertainment', shopping:'Shopping/clothes', coffee:'Coffee/drinks', savings:'Monthly savings', debt:'Debt payments', extras:'Other details' };
-
-    const lines = ids
-      .map(id => ({ id, val: document.getElementById(id).value }))
-      .filter(({ val }) => val)
-      .map(({ id, val }) => `${labels[id]}: ${id === 'extras' ? val : '$' + val}`);
-
-    if (!lines.length) {
-      const e = document.getElementById('errorMsg');
-      e.textContent = 'Enter at least one number so we have something to roast you about.';
-      e.classList.add('active');
-      return;
-    }
-
-    document.getElementById('errorMsg').classList.remove('active');
-    document.getElementById('roastBtn').disabled = true;
-    document.getElementById('formCard').style.display = 'none';
-    document.getElementById('loadingState').classList.add('active');
-    document.getElementById('resultCard').classList.remove('active');
-
-    const prompt = `Roast these finances with savage humor and specific jokes using the exact dollar amounts given. Always use all four sections.
-
-Finances:
-${lines.join('\n')}`;
+    status.textContent = 'Subscribing...';
+    status.className = 'form-status';
 
     try {
-      const res = await fetch('/api/roast', {
+      const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt })
+        body: JSON.stringify({ email })
       });
       const data = await res.json();
-
-      // Use rawText (our added field) or fall back to content blocks
-      const text = data.rawText || data.content?.map(b => b.text || '').join('') || '';
-
-      if (!text) throw new Error('Empty response');
-
-      const parsed = parseRoast(text);
-      const score = parsed.score ?? 50;
-
-      // Score display
-      const scoreEl = document.getElementById('scoreNum');
-      scoreEl.textContent = score;
-      scoreEl.style.color = score >= 70 ? '#4ade80' : score >= 40 ? '#FFD700' : '#FF4500';
-
-      // Render sections
-      renderSections(parsed, document.getElementById('roastSections'));
-
-      document.getElementById('loadingState').classList.remove('active');
-      document.getElementById('resultCard').classList.add('active');
-      setTimeout(() => { document.getElementById('scoreFill').style.width = score + '%'; }, 200);
-
-      window.lastRoastText = text;
-
+      if (res.ok) {
+        status.textContent = '✓ You\'re in. Check your inbox Sunday.';
+        status.className = 'form-status success';
+        form.reset();
+      } else {
+        status.textContent = data.error || 'Something went wrong. Try again.';
+        status.className = 'form-status error';
+      }
     } catch (err) {
-      document.getElementById('loadingState').classList.remove('active');
-      document.getElementById('formCard').style.display = 'block';
-      document.getElementById('roastBtn').disabled = false;
-      const e = document.getElementById('errorMsg');
-      e.textContent = 'Something went wrong. Please try again.';
-      e.classList.add('active');
+      status.textContent = 'Connection error. Try again.';
+      status.className = 'form-status error';
+    }
+  });
+
+  // Staggered scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('fade-in');
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.tool-card, .news-card').forEach(el => observer.observe(el));
+
+  // =====================================================
+  // LOAD ARTICLES from /api/articles (Supabase + RSS)
+  // =====================================================
+  async function loadArticles() {
+    const featuredContainer = document.getElementById('featuredContainer');
+    const latestContainer = document.getElementById('latestContainer');
+
+    try {
+      const res = await fetch('/api/articles');
+      const data = await res.json();
+
+      const featured = data.featured || [];
+      const latest = data.latest || [];
+
+      // --- Featured (curated) ---
+      if (featured.length === 0) {
+        featuredContainer.innerHTML = `
+          <div class="news-card" style="grid-column: 1/-1; text-align: center; color: var(--text-faint); padding: 48px;">
+            No curated articles yet. Check back soon.
+          </div>`;
+      } else {
+        featuredContainer.innerHTML = featured.map((a, i) =>
+          renderCard(a, i === 0 ? 'featured' : '')
+        ).join('');
+      }
+
+      // --- Latest (RSS) ---
+      if (latest.length === 0) {
+        latestContainer.innerHTML = `
+          <div class="news-card" style="grid-column: 1/-1; text-align: center; color: var(--text-faint); padding: 32px;">
+            Feeds unavailable right now. Try refreshing.
+          </div>`;
+      } else {
+        latestContainer.innerHTML = latest.map(a => renderCard(a, '')).join('');
+      }
+
+      // Re-attach fade-in observer to new cards
+      document.querySelectorAll('#featuredContainer .news-card, #latestContainer .news-card')
+        .forEach(el => observer.observe(el));
+
+      // Update meta tag timestamp
+      const meta = document.getElementById('curatedMeta');
+      if (meta && featured.length) meta.textContent = `// ${featured.length} curated`;
+    } catch (err) {
+      featuredContainer.innerHTML = `
+        <div class="news-card" style="grid-column: 1/-1; text-align: center; color: var(--text-faint); padding: 48px;">
+          Couldn't load articles. ${err.message}
+        </div>`;
     }
   }
 
-  function copyRoast() {
-    navigator.clipboard.writeText((window.lastRoastText || '') + '\n\nGet roasted free 👉 moneyroast.vercel.app 🔥').then(() => {
-      const btn = document.querySelector('.btn-share');
-      btn.textContent = '✅ Copied!';
-      setTimeout(() => btn.textContent = '📋 Copy & Share', 2000);
-    });
+  function renderCard(a, variant) {
+    const isFeatured = variant === 'featured';
+    const timeAgo = formatTimeAgo(a.published_at);
+    const safe = s => (s || '').replace(/[<>"']/g, c => ({ '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    return `
+      <a href="${safe(a.url)}" target="_blank" rel="noopener" class="news-card ${isFeatured ? 'featured' : ''}">
+        <div>
+          <div class="card-meta">
+            <span class="tag">${safe(a.tag || 'News')}</span>
+            <span>${timeAgo}</span>
+          </div>
+          <h3>${safe(a.title)}</h3>
+          ${a.description ? `<p>${safe(a.description)}</p>` : ''}
+        </div>
+        <div class="news-source">Source: ${safe(a.source || new URL(a.url).hostname.replace('www.',''))}</div>
+      </a>
+    `;
   }
 
-  function showUpgrade() {
-    document.getElementById('upsellCard').style.display = 'grid';
-    document.getElementById('upsellCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  function formatTimeAgo(iso) {
+    if (!iso) return '';
+    const diff = Date.now() - new Date(iso).getTime();
+    const mins = Math.floor(diff / 60000);
+    if (mins < 60) return `${mins}m ago`;
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return `${hrs}h ago`;
+    const days = Math.floor(hrs / 24);
+    if (days < 7) return `${days}d ago`;
+    return new Date(iso).toLocaleDateString();
   }
 
-  function resetApp() {
-    document.getElementById('formCard').style.display = 'block';
-    document.getElementById('resultCard').classList.remove('active');
-    document.getElementById('upsellCard').style.display = 'none';
-    document.getElementById('roastBtn').disabled = false;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+  loadArticles();
 </script>
+
 </body>
 </html>
