@@ -38,14 +38,14 @@ export default async function handler(req, res) {
     // === WHEN YOU HOOK UP A PROVIDER, replace above with one of these: ===
     //
     // --- BEEHIIV ---
-    // await fetch(`https://api.beehiiv.com/v2/publications/${process.env.BEEHIIV_PUB_ID}/subscriptions`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Authorization': `Bearer ${process.env.BEEHIIV_API_KEY}`,
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({ email, reactivate_existing: true, send_welcome_email: true })
-    // });
+     await fetch(`https://api.beehiiv.com/v2/publications/${process.env.BEEHIIV_PUB_ID}/subscriptions`, {
+       method: 'POST',
+       headers: {
+         'Authorization': `Bearer ${process.env.BEEHIIV_API_KEY}`,
+         'Content-Type': 'application/json'
+       },
+       body: JSON.stringify({ email, reactivate_existing: true, send_welcome_email: true })
+     });
     //
     // --- CONVERTKIT ---
     // await fetch(`https://api.convertkit.com/v3/forms/${process.env.CK_FORM_ID}/subscribe`, {
