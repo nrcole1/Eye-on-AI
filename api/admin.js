@@ -1,11 +1,17 @@
 // /api/admin.js
-// Admin endpoint — requires password (ADMIN_PASSWORD env var).
-// Handles: list, add, delete, and fetch-metadata actions for articles.
+// Single password-protected admin endpoint handling articles, projects, portfolio, and links.
+// Actions use `resource:verb` format (e.g., "articles:add", "projects:list").
 
 import { createClient } from '@supabase/supabase-js';
 
+const TABLES = {
+  articles: 'articles',
+  projects: 'projects',
+  portfolio: 'portfolio_items',
+  links: 'links'
+};
+
 export default async function handler(req, res) {
-  // Password check on every request
   const password = req.headers['x-admin-password'];
   if (!password || password !== process.env.ADMIN_PASSWORD) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -16,125 +22,113 @@ export default async function handler(req, res) {
     try { body = JSON.parse(body); } catch { return res.status(400).json({ error: 'Invalid JSON' }); }
   }
 
-  const action = body?.action || (req.method === 'GET' ? 'list' : '');
-
-  const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_KEY // service key bypasses RLS for writes
-  );
+  const action = body?.action || '';
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
   try {
     if (action === 'fetch-metadata') {
-      // Scrape Open Graph / meta tags from a URL
-      const meta = await fetchMetadata(body.url);
-      return res.status(200).json(meta);
+      return res.status(200).json(await fetchMetadata(body.url));
     }
 
-    if (action === 'list') {
-      const { data, error } = await supabase
-        .from('articles')
-        .select('*')
-        .order('created_at', { ascending: false });
+    const [resource, verb] = action.split(':');
+    const table = TABLES[resource];
+    if (!table) return res.status(400).json({ error: `Unknown resource: ${resource}` });
+
+    if (verb === 'list') {
+      const orderField = body.orderBy || defaultOrder(resource);
+      const ascending = body.ascending ?? false;
+      const { data, error } = await supabase.from(table).select('*').order(orderField, { ascending });
       if (error) throw error;
-      return res.status(200).json({ articles: data });
+      return res.status(200).json({ items: data });
     }
 
-    if (action === 'add') {
-      const { title, description, url, source, image_url, tag, featured } = body;
-      if (!title || !url) return res.status(400).json({ error: 'title and url are required' });
-
-      const { data, error } = await supabase
-        .from('articles')
-        .insert([{
-          title: title.trim(),
-          description: (description || '').trim(),
-          url: url.trim(),
-          source: (source || '').trim(),
-          image_url: image_url || null,
-          tag: tag || 'News',
-          featured: !!featured,
-          published_at: new Date().toISOString()
-        }])
-        .select()
-        .single();
-
+    if (verb === 'add') {
+      const payload = sanitize(resource, body);
+      if (!validateRequired(resource, payload)) {
+        return res.status(400).json({ error: `Missing required fields for ${resource}` });
+      }
+      const { data, error } = await supabase.from(table).insert([payload]).select().single();
       if (error) {
-        if (error.code === '23505') return res.status(409).json({ error: 'This URL is already saved.' });
+        if (error.code === '23505') return res.status(409).json({ error: 'This entry already exists.' });
         throw error;
       }
-      return res.status(200).json({ article: data });
+      return res.status(200).json({ item: data });
     }
 
-    if (action === 'update') {
-      const { id, ...fields } = body;
+    if (verb === 'update') {
+      const { id, ...rest } = body;
       if (!id) return res.status(400).json({ error: 'id is required' });
-      delete fields.action;
-
-      const { data, error } = await supabase
-        .from('articles')
-        .update(fields)
-        .eq('id', id)
-        .select()
-        .single();
+      delete rest.action;
+      const payload = sanitize(resource, rest);
+      if (resource === 'projects') payload.updated_at = new Date().toISOString();
+      const { data, error } = await supabase.from(table).update(payload).eq('id', id).select().single();
       if (error) throw error;
-      return res.status(200).json({ article: data });
+      return res.status(200).json({ item: data });
     }
 
-    if (action === 'delete') {
-      const { id } = body;
-      if (!id) return res.status(400).json({ error: 'id is required' });
-      const { error } = await supabase.from('articles').delete().eq('id', id);
+    if (verb === 'delete') {
+      if (!body.id) return res.status(400).json({ error: 'id is required' });
+      const { error } = await supabase.from(table).delete().eq('id', body.id);
       if (error) throw error;
       return res.status(200).json({ ok: true });
     }
 
-    return res.status(400).json({ error: 'Unknown action' });
+    return res.status(400).json({ error: `Unknown verb: ${verb}` });
   } catch (err) {
-    console.error('Admin API error:', err.message);
+    console.error('Admin error:', err.message);
     return res.status(500).json({ error: err.message });
   }
 }
 
-// Scrape Open Graph / Twitter Card / meta tags from a URL
+function defaultOrder(resource) {
+  if (resource === 'articles') return 'created_at';
+  if (resource === 'projects') return 'updated_at';
+  if (resource === 'portfolio') return 'completed_date';
+  if (resource === 'links') return 'sort_order';
+  return 'created_at';
+}
+
+function validateRequired(resource, p) {
+  if (resource === 'articles') return p.title && p.url;
+  if (resource === 'projects') return p.title;
+  if (resource === 'portfolio') return p.name;
+  if (resource === 'links') return p.platform && p.url;
+  return true;
+}
+
+function sanitize(resource, body) {
+  const allowed = {
+    articles: ['title', 'description', 'url', 'source', 'image_url', 'tag', 'featured', 'published_at'],
+    projects: ['title', 'client_name', 'description', 'status', 'progress', 'start_date', 'due_date',
+               'hourly_rate', 'budget', 'hours_logged', 'tags', 'show_publicly', 'notes', 'repo_url'],
+    portfolio: ['name', 'description', 'repo_url', 'live_url', 'language', 'language_color',
+                'tech_stack', 'stars', 'completed_date', 'category', 'pinned'],
+    links: ['platform', 'url', 'label', 'sort_order']
+  };
+  const out = {};
+  for (const key of allowed[resource] || []) {
+    if (key in body) {
+      const v = body[key];
+      out[key] = typeof v === 'string' ? v.trim() : v;
+    }
+  }
+  return out;
+}
+
 async function fetchMetadata(url) {
   if (!url) return { error: 'No URL provided' };
   try {
     const response = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; Signal-AI-Bot/1.0; +https://signal-ai.com)'
-      },
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Signal-AI-Bot/1.0)' },
       signal: AbortSignal.timeout(8000)
     });
     if (!response.ok) return { error: `Fetch failed: ${response.status}` };
     const html = await response.text();
-
-    const title =
-      meta(html, 'og:title') ||
-      meta(html, 'twitter:title') ||
-      extractTag(html, 'title') ||
-      '';
-
-    const description =
-      meta(html, 'og:description') ||
-      meta(html, 'twitter:description') ||
-      meta(html, 'description') ||
-      '';
-
-    const image =
-      meta(html, 'og:image') ||
-      meta(html, 'twitter:image') ||
-      '';
-
-    const siteName =
-      meta(html, 'og:site_name') ||
-      new URL(url).hostname.replace('www.', '') ||
-      '';
-
     return {
-      title: decodeEntities(title).trim(),
-      description: decodeEntities(description).trim().slice(0, 250),
-      image_url: image.trim(),
-      source: decodeEntities(siteName).trim()
+      title: decodeEntities(meta(html, 'og:title') || meta(html, 'twitter:title') || extractTag(html, 'title') || '').trim(),
+      description: decodeEntities(meta(html, 'og:description') || meta(html, 'twitter:description') || meta(html, 'description') || '').trim().slice(0, 250),
+      image_url: (meta(html, 'og:image') || meta(html, 'twitter:image') || '').trim(),
+      source: decodeEntities(meta(html, 'og:site_name') || new URL(url).hostname.replace('www.', '') || '').trim()
     };
   } catch (err) {
     return { error: err.message };
@@ -142,7 +136,6 @@ async function fetchMetadata(url) {
 }
 
 function meta(html, prop) {
-  // Matches <meta property="og:title" content="..."> or name="..."
   const patterns = [
     new RegExp(`<meta[^>]+(?:property|name)=["']${prop}["'][^>]+content=["']([^"']+)["']`, 'i'),
     new RegExp(`<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["']${prop}["']`, 'i')
@@ -160,12 +153,8 @@ function extractTag(html, tag) {
 }
 
 function decodeEntities(s) {
-  return s
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&nbsp;/g, ' ')
+  return (s || '')
+    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&nbsp;/g, ' ')
     .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(parseInt(n)));
 }
